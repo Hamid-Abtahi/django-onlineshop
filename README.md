@@ -1,7 +1,5 @@
-# django-onlineshop
 
-
-#  Online Shop Project
+#  django Online Shop Project
 
 This is an **Online Store Web Application** built with **Django** as the backend framework.  
 For the frontend, **Bootstrap** is used for responsive design, and **jQuery** is used for dynamic interactions.
