@@ -1,0 +1,216 @@
+
+{%extends 'base.html'%}
+{% load static %}
+{%load humanize%}
+{%block content%}
+
+   
+        <!-- Header-->
+        <header class="bg-danger py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Shopping Cart</h1>
+                    <p class="lead fw-normal text-white-50 mb-0"></p>
+                </div>
+            </div>
+        </header>
+        
+        
+        {%if cart_products%}
+        {%for products in cart_products%}
+        <div style="display:flex ;flex-direction: column;align-items: center;margin-top:5px;margin-bottom:2px ; padding:15px">
+            <div  class="card mb-3" style="max-width: 840px;min-width:450px">
+                <div class="row g-0">
+                <div class="col-md-4">
+                    <img style="height:100% ; max-height:350px ;width:500px;height:200px" src="{{products.picture.url}}" class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                    <h5 class="card-title">{{products.name}}</h5>
+                    <p class="card-text">{{products.description}}</p>
+                    {%if products.is_sale%}
+                    <strike><p class="card-text">${{products.price | intcomma}}</p> </strike>
+                    <p class="card-text">${{products.sale_price | intcomma}}</p>
+                    {%else%}
+                    <p class="card-text">${{products.price | intcomma}}</p>
+                    {%endif%}
+                    
+
+
+                
+
+
+
+
+                    <p class="card-text">Quantity:<br></p>
+                        <select  class="form-select" id="select{{products.id}}">
+                
+
+
+                            {%for key,value in quantities.items%}
+
+                                {%if key == products.id|slugify %}
+                                <option selected> {{value}}</option>
+                                {%endif%}
+
+                            {%endfor%}
+
+
+
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                          </select>
+                          
+                        
+                    <br>   
+                    <button   class="btn btn-dark  update_cart"  type="button"  data-index={{products.id}}>Update</button>
+                    <button   class="btn btn-dark  delete_product"  type="button"  data-index={{products.id}}>Delete</button>
+                    <br>     
+                    {% comment %} <button class="btn btn-dark" type="button" value="{{products.id}}" id="add_cart">Add to Cart</button> {% endcomment %}
+        
+                    <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                    </div>
+                    
+                </div>
+                </div>
+            </div>
+        </div>
+        
+        {%endfor%}
+
+        <div class="d-flex justify-content-center">
+            <div style="border:solid ;padding:50px;border-radius: 1rem;background: rgba(220, 53, 69, 1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); 
+            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            text-align: center;
+            max-width: 650px; flex-direction: column; " class="d-flex justify-content-center mb-5 mt-5 ">
+
+                <h3><p><strong>Subtotal:</strong> ${{total_price|intcomma}} &#10004;</p> </h3>
+                <a style="border:none;border-radius: 0.5rem;" href="{%url 'checkout'%}" class="btn btn-dark"><h3>Order Summary</h3></a>
+            </div>
+            
+        </div>
+
+        {%else%}
+        <div class="d-flex justify-content-center">
+            <div style="border:solid ;padding:50px;border-radius: 1rem;background: rgba(220, 53, 69, 1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); 
+            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            text-align: center;
+            max-width: 650px " class="d-flex justify-content-center mb-5 mt-5 ">
+
+                <h3>Your shopping cart is currently empty. {% comment %} {{cart_products}} {% endcomment %}☹</h3>
+                
+            </div>
+        </div>
+        
+        
+
+
+        {%endif%}
+
+
+        
+        
+
+
+
+
+
+        <script>
+            $(document).on('click','.update_cart',function(e){
+                e.preventDefault();
+
+                var productid=$(this).data('index')
+
+                $.ajax({
+                    type: 'POST',
+                    url:'{% url 'cart_update' %}',
+                    data: {
+                        product_id: $(this).data('index'),
+                        product_qty:$('#select'+productid+' option:selected').text(),
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        action:'post'
+        
+        
+                    },
+                    success : function(json){
+                        {% comment %} console.log(json) {% endcomment %}
+        
+                        {% comment %} document.getElementById('cart_quantity').textContent=json.cart_quantity {% endcomment %}
+                    
+                        location.reload();
+                    
+                    },
+        
+                    error : function(xhr,errmsg,err){
+                        
+                    },
+        
+                })
+            } )
+
+
+
+
+
+
+
+
+
+
+
+
+            $(document).on('click','.delete_product',function(e){
+                e.preventDefault();
+
+                
+                $.ajax({
+                    type: 'POST',
+                    url:'{% url 'cart_delete' %}',
+                    data: {
+                        product_id: $(this).data('index'),
+                        
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        action:'post'
+        
+        
+                    },
+                    success : function(json){
+                        {% comment %} console.log(json) {% endcomment %}
+        
+                        {% comment %} document.getElementById('cart_quantity').textContent=json.cart_quantity {% endcomment %}
+                    
+                        location.reload();
+                    
+                    },
+        
+                    error : function(xhr,errmsg,err){
+                        
+                    },
+        
+                })
+            } )
+
+
+
+
+
+        </script>
+
+
+
+
+
+
+
+
+{%endblock%}     

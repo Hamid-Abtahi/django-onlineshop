@@ -1,0 +1,100 @@
+
+{%extends 'base.html'%}
+{% load static %}
+{%load humanize%}
+{%block content%}
+
+   
+        <!-- Header-->
+        <header class="bg-danger py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Review & Confirm</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Please review your order before proceeding</p>
+                </div>
+            </div>
+        </header>
+        
+        <div  class="d-flex justify-content-center mb-5 mt-5 ">
+
+            <div class="card" style="width:80vw;text-align:center;">
+                <div class="card-header">
+                   <h5>Order Details</h5>
+                </div>
+                <div class="card-body">
+                    {%for product in cart_products%}
+                        <h6>{{product.name}}</h6>
+
+                        {%if product.is_sale%}
+                            {% comment %} <strike><p class="card-text">${{product.price | intcomma}}</p> </strike> {% endcomment %}
+                            price: ${{product.sale_price | intcomma}}
+                        {%else%}
+                           price: ${{product.price | intcomma}}
+                        {%endif%}
+                        <p class="card-text">
+                        {%for key,value in quantities.items%}
+
+                                {%if key == product.id|slugify %}
+                                <option selected>Quantity: {{value}}</option>
+                                {%endif%}
+
+                        {%endfor%}</p>
+                        <hr>
+                    {%endfor%}
+                        
+                    <h5><p><strong>Subtotal:</strong> ${{total_price|intcomma}} &#10004;</p> </h5>
+                    
+                </div>
+              </div>
+
+
+
+
+
+
+        </div>
+
+        <div  class="d-flex justify-content-center mb-5 mt-5 ">
+
+            <div class="card" style="width:80vw;text-align:center;">
+                <div class="card-header">
+                   <h5>Shipping Information</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{%url 'process_order' %}">
+                        {% csrf_token %}
+                    
+                    <p>Full Name: {{user_shipping.shipping_full_name}}</p>
+                    <p>Email: {{user_shipping.shipping_email}}</p>
+                    <p>Primary Address: {{user_shipping.shipping_address1}}</p>
+                    <p>Secondary Address: {{user_shipping.shipping_address2}}</p>
+                    <p>City: {{user_shipping.shipping_city}}</p>
+                    <p>State: {{user_shipping.shipping_state}}</p>
+                    <p>Zipcode: {{user_shipping.shipping_zipcode}}</p>
+                    <p>Country: {{user_shipping.shipping_country}}</p>
+                  
+                  
+                    <button type="submit"  style="border:none" class="btn btn-dark">Confirm & Pay</button>
+                    </form>  
+                </div>
+              </div>
+
+
+
+
+
+
+        </div>
+       
+
+
+
+
+
+
+
+
+
+
+
+{%endblock%}     

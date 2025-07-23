@@ -1,0 +1,66 @@
+{%extends 'base.html'%}
+{%block content%}
+
+
+
+
+<!-- Header-->
+<header class="bg-danger text-light py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">User Information</h1>
+            <p class="lead fw-normal text-white-50 mb-0"></p>
+        </div>
+    </div>
+</header>
+
+        {% if update_info.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ update_info.non_field_errors }}
+            </div>
+        {% endif %}
+
+        {% for field in update_info %}
+            {% if field.errors %}
+                <div class="alert alert-danger">
+                     <strong>{{ field.label|default:field.name }}:</strong> {{ field.errors|striptags }}
+                </div>
+            {% endif %}
+        {% endfor %}
+
+<div style="display:flex ;flex-direction: column;align-items: center; padding:35px">
+    <div class="bg-danger text.light" style="padding:30px;border-radius:2rem;text-align:center;">
+
+        
+        <strong style="color:white;">User Information</strong>
+        <br>
+
+
+        <form  style="width:260px;padding:1px;text-align:center;" method="POST" action="{% url 'update_info' %}">
+            {% csrf_token %}
+                {{update_info.as_p}}
+                <br>
+
+            <strong  style="color:white;">Shipping Information</strong>
+            <br>
+                {{shipping_form.as_p}}
+            <button type="submit" style="border: none" class="btn btn-dark">Update</button>
+        </form>
+        <br>
+
+    </div>
+    
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+{%endblock%}

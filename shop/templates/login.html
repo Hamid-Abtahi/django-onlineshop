@@ -1,0 +1,54 @@
+{%extends 'base.html'%}
+{%block content%}
+
+
+
+
+<!-- Header-->
+<header class="bg-danger text-light py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">LOGIN</h1>
+            <p class="lead fw-normal text-white-50 mb-0"></p>
+        </div>
+    </div>
+</header>
+
+
+<div style="display:flex ;flex-direction: column;align-items: center; padding:35px">
+    <div class="bg-danger text.light" style="padding:35px;border-radius:2rem">
+
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="mb-3 text-light">
+              <label for="exampleInputEmail1" class="form-label text-light">User name</label>
+              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="username" placeholder="Enter your username">
+              <div id="emailHelp" class="form-text text-light">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label text-light">Password</label>
+              <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Enter your password">
+            </div>
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+              <label class="form-check-label text-light" for="exampleCheck1">Check me out</label>
+            </div>
+            <button type="submit" style="border: none" class="btn btn-dark">Login</button>
+          </form>
+
+    </div>
+    
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+{%endblock%}

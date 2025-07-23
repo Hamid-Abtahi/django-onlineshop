@@ -1,0 +1,56 @@
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="/">Shop Your Dreams!</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 ">
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{%url 'search' %}">search</a></li>
+                <li class="nav-item"><a class="nav-link" href="{%url 'about'%}">About</a></li>
+                {%if user.is_authenticated%}
+
+                
+                
+                <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="{% url 'home' %}" role="button" data-bs-toggle="dropdown" aria-expanded="false">Profile</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'update_user' %}">User Profile</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="{% url 'update_info'  %}">User Information</a></li>
+                        <li><a class="dropdown-item" href="{% url 'user_orders'  %}">My Orders</a></li>
+                    </ul>
+                </li>
+                {%else%}
+                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">Signup</a></li>
+
+
+                {%endif%}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="{% url 'home' %}" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'category_summary' %}">All Categories</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="{% url 'category' 'camera' %}">Camera</a></li>
+                        <li><a class="dropdown-item" href="{% url 'category' 'mobile' %}">Mobile</a></li>
+                        <li><a class="dropdown-item" href="{% url 'category' 'headphone' %}">Headphone</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form  class="d-flex">
+                <a href="{% url 'cart_summary' %}" class="btn btn-outline-dark text-danger ">
+                    <i class="bi-cart-fill me-1 text-danger"></i>
+                    Cart
+                    <span class="badge  text-white ms-1 rounded-pill bg-danger" id="cart_quantity">{{cart|length}}</span>    
+                </a>
+                {% comment %} <button class="btn btn-outline-dark text-danger " type="submit">
+                    
+                </button> {% endcomment %}
+            </form>
+        </div>
+    </div>
+</nav>

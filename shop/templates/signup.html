@@ -1,0 +1,62 @@
+{%extends 'base.html'%}
+{%block content%}
+
+
+
+
+<!-- Header-->
+<header class="bg-danger text-light py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Sign up now!</h1>
+            <p class="lead fw-normal text-white-50 mb-0"></p>
+        </div>
+    </div>
+</header>
+
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        {% for field in form %}
+            {% if field.errors %}
+                <div class="alert alert-danger">
+                     <strong>{{ field.label|default:field.name }}:</strong> {{ field.errors|striptags }}
+                </div>
+            {% endif %}
+        {% endfor %}
+
+<div style="display:flex ;flex-direction: column;align-items: center; padding:35px">
+    <div class="bg-danger text.light" style="padding:30px;border-radius:2rem">
+
+        
+
+
+
+        <form  style="width:260px;padding:1px" method="POST" action="{% url 'signup' %}">
+            {% csrf_token %}
+                {{form.as_p}}
+                <br><br>
+
+
+            <button type="submit" style="border: none" class="btn btn-dark">Signup</button>
+        </form>
+
+    </div>
+    
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+{%endblock%}
